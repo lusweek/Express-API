@@ -3,12 +3,17 @@ const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
 const router = require("./api/API")
+const path = require("path")
 
 app.use(cors()); 
 
 app.use(express.json());
 
+// I app.js skriver vi http://localhost:5000/api/ - /api pekar på denna raden
 app.use("/api", router)
+
+// Detta sammankopplar app.js med vår API. Det jag skriver i app.js kommer ske på http://localhost:5000/ .
+app.use(express.static(path.join(__dirname, "client")));
 
 // Gjort en liten ändring 
 mongoose.connect(
