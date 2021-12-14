@@ -1,6 +1,6 @@
 // API root 
 // I index.js skriver vi // app.use("/api", router) // Så sammankopplar vi dessa
-const rootURL = "http://localhost:5000/api/" ; 
+const rootURL = "/api/" ; 
 
 
 let posts = [] ;
@@ -23,7 +23,8 @@ const getPosts = async () => {
     .map(
         //quid - id:t i varje objekt i mappen har en quid id, detta är mass siffror. Behöver 
         //  hantera det, inte så svårt. Man skriver _id, det är mongodb. 
-        // vi lägger in id i varje objekt vi mappar ut för att kunna targeta dem när vi ska uppdatera.
+        // vi lägger in id i varje objekt vi mappar ut för att kunna targeta dem när vi ska uppdatera 
+        //      och för att kunna ta bort dem, som vi vill i funktionen deletePost.
         post => 
         `<div>
             <h3 id="'${post._id}'-title">${post.title}</h3>
@@ -37,18 +38,25 @@ const getPosts = async () => {
         ).join("")
 
 }
-
+ 
 // New post
 const newPost = async () => {
     // .value blir det man skriver i boxarna i html. 
+    const firstname = document.querySelector("#post-firstname").value;
+    const email = document.querySelector("#post-email").value;
     const title = document.querySelector("#post-title").value;
     const content = document.querySelector("#post-content").value;
+    
+    // Varför behöver man skriva detta? 
     const post = {
+        firstname: firstname,
+        email: email,
         title: title,
         content: content
         /*Man kan skriva
         title,
         content
+        När det är exakt samma ord. 
          */
     };
 
@@ -104,6 +112,7 @@ showresponsemessage(data.message.mgsBody)
 
 //delete post
 // argumentet id hämtas från getPosts, det säger vilken post man ska ta bort 
+// findByIdaAndDelete används här. Därför behöver vi objektets id. 
 const deletePost = async (id) => {
     const res = await fetch(`${rootURL}deletepost/${id}`, {
         method: "delete"

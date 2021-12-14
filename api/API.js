@@ -1,12 +1,28 @@
+// OPS - Om man clonar ner måste man skriva 
+// 'npm install' i terminalen för att instalera alla dependensis som ligger 
+//      i pakage.json. 
+// För att starta serven behöver man skriva 'npm run dev'
+
+// MAILFUNKTION - detta ska skrivas i terminalen för att instalera det som behövs för att
+// använda mail:  'npm install nodemailer nodemailer-sendgrid'
+
+ 
 const express = require("express");
 const router = express.Router();
 const Post = require("../models/Post")
+// krävs för att man ska kunna skicka mail. På detta sätt pekar vi på exakta 
+//  funktionen från vilken fil. 
+// object destructuring kallas detta sättet att plocka ut funtionen. 
+const {postAddedEmail/*, enAnnanFuntion (om man vill) */} = require("../services/EmailService")
 
 router.post("/newpost", (req, res) => {
     console.log(req.body);
     const newPost = new Post({
+            firstname: req.body.firstname,
+            email: req.body.email,
             title: req.body.title, 
-            content : req.body.content
+            content : req.body.content,
+            email: req.body.email
         });
     newPost.save((err) => {
         if (err) {
@@ -18,6 +34,7 @@ router.post("/newpost", (req, res) => {
                 },
                 });
         }else {
+            postAddedEmail(req.body)
             res.status(201).json({message: {
                 msgBody: "Post successfully created", msgError: false
             }

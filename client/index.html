@@ -5,11 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-</head>
+</head> 
 <body>
     <!--return false gör att sidan inte laddar om sidan när man klickar på submint-->
     <form onsubmit="newPosts(); return false;">
         <h2>Add new post</h2>
+        <input id="post-firstname" placeholder="First name">
+        <input id="post-email" placeholder="Email">
         <input id="post-title" placeholder="title">
         <input id="post-content" placeholder="content">
         <button type="submit">Add</button>
